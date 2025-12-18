@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-points-display',
@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './points-display.component.scss'
 })
 export class PointsDisplayComponent {
+ 
+    @Input() points: number = 0;
+    @Input() label: string = 'Points';
+    @Input() size: 'normal' | 'large' = 'normal';
+
 
 }

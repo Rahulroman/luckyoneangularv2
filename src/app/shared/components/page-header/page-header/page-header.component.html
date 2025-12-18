@@ -1,1 +1,11 @@
-<p>page-header works!</p>
+<div class="page-header">
+      <div class="header-content">
+        <h1 class="title">{{ title }}</h1>
+        <p *ngIf="subtitle" class="subtitle">{{ subtitle }}</p>
+      </div>
+      <div *ngIf="showBackButton" class="header-actions">
+        <button routerLink=".." class="back-button">
+          ← Back
+        </button>
+      </div>
+    </div>

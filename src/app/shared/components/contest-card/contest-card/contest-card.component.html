@@ -1,1 +1,52 @@
-<p>contest-card works!</p>
+ <div class="contest-card" [class.completed]="contest.status === 'completed'">
+      <div class="contest-banner" [style.backgroundImage]="'url(' + (contest.bannerImage || 'assets/images/contest-banner.jpg') + ')'">
+        <div class="contest-status" [class]="contest.status">
+          {{ contest.status | titlecase }}
+        </div>
+        <div class="contest-entry-points">
+          ⚡ {{ contest.entryPoints }} Points
+        </div>
+      </div>
+      
+      <div class="contest-content">
+        <h3 class="contest-title">{{ contest.title }}</h3>
+        <p class="contest-description">{{ contest.description }}</p>
+        
+        <div class="contest-meta">
+          <div class="meta-item">
+            <span class="meta-icon">👥</span>
+            <span class="meta-text">{{ contest.currentParticipants }}/{{ contest.maxParticipants }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">🏆</span>
+            <span class="meta-text">{{ contest.winnerUsername || 'No winner yet' }}</span>
+          </div>
+        </div>
+        
+        <div class="contest-dates">
+          <div class="date-item">
+            <span class="date-label">Starts:</span>
+            <span class="date-value">{{ contest.startDate | date:'medium' }}</span>
+          </div>
+          <div class="date-item">
+            <span class="date-label">Ends:</span>
+            <span class="date-value">{{ contest.endDate | date:'medium' }}</span>
+          </div>
+        </div>
+        
+        <div class="contest-actions">
+          <button 
+            [routerLink]="['/contests', contest.id]" 
+            class="btn btn-primary">
+            View Details
+          </button>
+          
+          <button 
+            *ngIf="contest.status === 'active' && contest.currentParticipants < contest.maxParticipants"
+            [routerLink]="['/contests/join', contest.id]"
+            class="btn btn-success">
+            Join Contest
+          </button>
+        </div>
+      </div>
+    </div>
