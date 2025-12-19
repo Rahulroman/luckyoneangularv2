@@ -1,1 +1,78 @@
-<p>main-layout works!</p>
+  <div class="main-layout">
+      <header class="header">
+        <div class="header-container">
+          <div class="logo">
+            <a routerLink="/dashboard">
+              <img src="assets/images/logo.png" alt="LuckyOne" height="40">
+            </a>
+          </div>
+          
+          <nav class="nav-menu">
+            <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+            <a routerLink="/contests" routerLinkActive="active">Contests</a>
+            <a routerLink="/my-contests" routerLinkActive="active">My Contests</a>
+            <a routerLink="/winners" routerLinkActive="active">Winners</a>
+            <a routerLink="/wallet" routerLinkActive="active">Wallet</a>
+          </nav>
+          
+          <div class="user-menu">
+            <div class="user-info" *ngIf="currentUser">
+              <span class="user-name">{{ currentUser.username }}</span>
+            </div>
+            
+            <div class="dropdown">
+              <button class="dropdown-toggle">
+                <img [src]="currentUser?.username || 'assets/images/avatar-placeholder.png'" 
+                     alt="Avatar" 
+                     class="user-avatar">
+              </button>
+              
+              <div class="dropdown-menu">
+                <a routerLink="/profile" class="dropdown-item">Profile</a>
+                <a routerLink="/transactions" class="dropdown-item">Transactions</a>
+                <a routerLink="/settings" class="dropdown-item">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a routerLink="/admin" *ngIf="currentUser?.role" class="dropdown-item">Admin</a>
+                <button (click)="logout()" class="dropdown-item logout">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <main class="main-content">
+        <div class="container">
+          <router-outlet></router-outlet>
+        </div>
+      </main>
+      
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-section">
+            <h3>LuckyOne</h3>
+            <p>Join exciting contests and win amazing prizes!</p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <a routerLink="/contests">Contests</a>
+            <a routerLink="/winners">Winners</a>
+            <a routerLink="/faq">FAQ</a>
+            <a routerLink="/contact">Contact</a>
+          </div>
+          <div class="footer-section">
+            <h4>Legal</h4>
+            <a routerLink="/terms">Terms & Conditions</a>
+            <a routerLink="/privacy">Privacy Policy</a>
+            <a routerLink="/responsible-gaming">Responsible Gaming</a>
+          </div>
+          <div class="footer-section">
+            <h4>Contact Us</h4>
+            <p>Email: {{supportEmail}}</p>
+            <p>Phone: +1 (555) 123-4567</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; {{ currentYear }} LuckyOne. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>

@@ -1,1 +1,119 @@
-<p>dashboard works!</p>
+ <app-page-header 
+      title="Dashboard" 
+      subtitle="Welcome back! Here's what's happening today."
+      >
+    </app-page-header>
+    
+    <div class="dashboard-content">
+      <!-- Stats Overview -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-info">
+            <div class="stat-value">{{ balance | number }}</div>
+            <div class="stat-label">Available Points</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-info">
+            <div class="stat-value">{{ activeContests.length }}</div>
+            <div class="stat-label">Active Contests</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <div class="stat-value">{{ myContests.length }}</div>
+            <div class="stat-label">My Contests</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <div class="stat-value">{{ wins }}</div>
+            <div class="stat-label">Total Wins</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="actions-grid">
+          <a [routerLink]="['/contests']" class="action-card">
+            <div class="action-icon">🔍</div>
+            <div class="action-text">Browse Contests</div>
+          </a>
+          
+          <a [routerLink]="['/wallet/add-points']" class="action-card">
+            <div class="action-icon">💰</div>
+            <div class="action-text">Add Points</div>
+          </a>
+          
+          <a [routerLink]="['/profile']" class="action-card">
+            <div class="action-icon">👤</div>
+            <div class="action-text">My Profile</div>
+          </a>
+          
+          <a [routerLink]="['/winners']" class="action-card">
+            <div class="action-icon">🏅</div>
+            <div class="action-text">Recent Winners</div>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Active Contests -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Active Contests</h2>
+          <a [routerLink]="['/contests']" class="view-all">View All →</a>
+        </div>
+        
+        <!-- <div *ngIf="activeContests.length > 0; " class="contests-grid"> -->
+          <app-contest-card 
+            *ngFor="let contest of activeContests" 
+            [contest]="contest">
+          </app-contest-card>
+        <!-- </div> -->
+        
+        <ng-template>
+          <app-empty-state
+            title="No Active Contests"
+            description="There are no active contests at the moment. Check back soon!">
+            <div icon>🏆</div>
+            <div action>
+              <button [routerLink]="['/contests']" class="btn btn-primary">
+                Browse All Contests
+              </button>
+            </div>
+          </app-empty-state>
+        </ng-template>
+      </div>
+      
+      <!-- Upcoming Contests -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Upcoming Contests</h2>
+          <a [routerLink]="['/contests']" class="view-all">View All →</a>
+        </div>
+        
+        <div *ngIf="upcomingContests.length > 0; else noUpcomingContests" class="contests-grid">
+          <app-contest-card 
+            *ngFor="let contest of upcomingContests" 
+            [contest]="contest">
+          </app-contest-card>
+        </div>
+        
+        <ng-template #noUpcomingContests>
+          <app-empty-state
+            title="No Upcoming Contests"
+            description="No upcoming contests scheduled yet. Stay tuned!">
+            <div icon>📅</div>
+          </app-empty-state>
+        </ng-template>
+      </div>
+    </div>

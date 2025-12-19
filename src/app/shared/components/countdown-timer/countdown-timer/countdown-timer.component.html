@@ -1,1 +1,21 @@
-<p>countdown-timer works!</p>
+ <div class="countdown-timer">
+      <div class="timer-label">{{ label }}</div>
+      <div class="timer-display">
+        <div class="time-unit" *ngIf="days > 0">
+          <span class="time-value">{{ padZero(days) }}</span>
+          <span class="time-label">Days</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-value">{{ padZero(hours) }}</span>
+          <span class="time-label">Hours</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-value">{{ padZero(minutes) }}</span>
+          <span class="time-label">Minutes</span>
+        </div>
+        <div class="time-unit">
+          <span class="time-value">{{ padZero(seconds) }}</span>
+          <span class="time-label">Seconds</span>
+        </div>
+      </div>
+    </div>

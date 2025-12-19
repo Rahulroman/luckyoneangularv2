@@ -1,1 +1,7 @@
-<p>points-display works!</p>
+ <div class="points-display" [class.large]="size === 'large'">
+      <div class="points-icon">⚡</div>
+      <div class="points-content">
+        <div class="points-label">{{ label }}</div>
+        <div class="points-value">{{ points }}</div>
+      </div>
+    </div>
