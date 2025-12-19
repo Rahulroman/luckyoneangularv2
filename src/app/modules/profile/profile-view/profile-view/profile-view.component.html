@@ -1,1 +1,104 @@
-<p>profile-view works!</p>
+<app-page-header 
+      title="My Profile" 
+      subtitle="Manage your account information"
+      [showBackButton]="true">
+    </app-page-header>
+    
+    <div class="profile-view">
+      <div class="profile-card">
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="avatar-container">
+            <img 
+              [src]="user?.avatar || 'assets/images/avatar-placeholder.png'" 
+              [alt]="user?.username"
+              class="profile-avatar">
+            <button routerLink="/profile/edit" class="edit-avatar-btn">✏️</button>
+          </div>
+          
+          <div class="profile-info">
+            <h1 class="profile-name">{{ user?.fullName }} </h1>
+            <div class="profile-username">{{ '@' + user?.username }}</div>
+            <div class="profile-email">{{ user?.email }}</div>
+            
+            <div class="profile-stats">
+              <div class="stat">
+                <div class="stat-value">{{ user?.points | number }}</div>
+                <div class="stat-label">Points</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">{{ contestWins }}</div>
+                <div class="stat-label">Wins</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">{{ contestEntries }}</div>
+                <div class="stat-label">Entries</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Account Details -->
+        <div class="account-details">
+          <h2>Account Details</h2>
+          <div class="details-grid">
+            <div class="detail-item">
+              <div class="detail-label">Member Since</div>
+              <div class="detail-value">{{ user?.createdAt  }}</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Account Status</div>
+              <div class="detail-value status-active">
+                {{ user?.isActive ? 'Active' : 'Inactive' }}
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Account Type</div>
+              <div class="detail-value role-badge" [class.admin]="user?.role === 'Admin'">
+                {{ user?.role  }}
+              </div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Last Updated</div>
+              <div class="detail-value">{{ user?.updatedAt  }}</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="profile-actions">
+          <h2>Quick Actions</h2>
+          <div class="actions-grid">
+            <button routerLink="/profile/edit" class="action-btn">
+              <span class="action-icon">✏️</span>
+              <span class="action-text">Edit Profile</span>
+            </button>
+            
+            <button routerLink="/profile/change-password" class="action-btn">
+              <span class="action-icon">🔒</span>
+              <span class="action-text">Change Password</span>
+            </button>
+            
+            <button routerLink="/wallet" class="action-btn">
+              <span class="action-icon">💰</span>
+              <span class="action-text">Wallet</span>
+            </button>
+            
+            <button routerLink="/my-contests" class="action-btn">
+              <span class="action-icon">🏆</span>
+              <span class="action-text">My Contests</span>
+            </button>
+            
+            <button routerLink="/transactions" class="action-btn">
+              <span class="action-icon">📋</span>
+              <span class="action-text">Transactions</span>
+            </button>
+            
+            <button *ngIf="user?.role === 'Admin'" routerLink="/admin" class="action-btn">
+              <span class="action-icon">⚙️</span>
+              <span class="action-text">Admin Panel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,1 +1,70 @@
-<p>contest-list works!</p>
+<app-page-header 
+      title="All Contests" 
+      subtitle="Browse and join exciting contests">
+    </app-page-header>
+    
+    <div class="contest-list">
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-group">
+          <label>Status:</label>
+          <select [(ngModel)]="selectedStatus" (change)="loadContests()">
+            <option value="">All</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Sort by:</label>
+          <select [(ngModel)]="sortBy" (change)="loadContests()">
+            <option value="startDate">Start Date</option>
+            <option value="entryPoints">Entry Points</option>
+            <option value="maxParticipants">Participants</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Contest Grid -->
+      <div *ngIf="contests.length > 0; else noContests" class="contests-grid">
+        <app-contest-card 
+          *ngFor="let contest of contests" 
+          [contest]="contest">
+        </app-contest-card>
+      </div>
+      
+      <ng-template #noContests>
+        <app-empty-state
+          title="No Contests Found"
+          description="There are no contests matching your criteria. Try changing your filters.">
+          <div icon>🏆</div>
+          <div action>
+            <button (click)="resetFilters()" class="btn btn-primary">
+              Reset Filters
+            </button>
+          </div>
+        </app-empty-state>
+      </ng-template>
+      
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="pagination">
+        <button 
+          (click)="prevPage()" 
+          [disabled]="currentPage === 1"
+          class="page-btn">
+          ← Previous
+        </button>
+        
+        <span class="page-info">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+        
+        <button 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages"
+          class="page-btn">
+          Next →
+        </button>
+      </div>
+    </div>
