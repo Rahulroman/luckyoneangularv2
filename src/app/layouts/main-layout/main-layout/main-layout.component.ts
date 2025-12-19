@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from "@angular/router";
+import { RouterOutlet, RouterLink } from "@angular/router";
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { User } from '../../../core/models/user.model';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule],
+  imports: [RouterOutlet, CommonModule, FormsModule, RouterLink],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss'
 })

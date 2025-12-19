@@ -1,1 +1,84 @@
-<p>wallet-dashboard works!</p>
+<app-page-header 
+      title="My Wallet" 
+      subtitle="Manage your points and transactions">
+    </app-page-header>
+    
+    <div class="wallet-dashboard">
+      <!-- Points Balance -->
+      <div class="balance-section">
+        <app-points-display 
+          [points]="balance"
+          label="Available Balance"
+          size="large">
+        </app-points-display>
+        
+        <div class="balance-actions">
+          <button routerLink="/wallet/add-points" class="btn btn-primary">
+            ⚡ Add Points
+          </button>
+          <button routerLink="/transactions" class="btn btn-secondary">
+            📋 View Transactions
+          </button>
+        </div>
+      </div>
+      
+      <!-- Recent Transactions -->
+      <div class="transactions-section">
+        <div class="section-header">
+          <h2>Recent Transactions</h2>
+          <a routerLink="/transactions" class="view-all">View All →</a>
+        </div>
+        
+        <div *ngIf="recentTransactions.length > 0; else noTransactions" class="transactions-list">
+          <div *ngFor="let transaction of recentTransactions" class="transaction-item">
+            <div class="transaction-icon" [class.credit]="transaction.type === 'credit'" [class.debit]="transaction.type === 'debit'">
+              {{ transaction.type === 'credit' ? '⬆️' : '⬇️' }}
+            </div>
+            
+            <div class="transaction-details">
+              <div class="transaction-description">{{ transaction.remarks }}</div>
+              <div class="transaction-meta">
+                <span class="transaction-date">{{ transaction.transactionDate| date:'medium' }}</span>
+                <span *ngIf="transaction.contestId" class="contest-badge">Contest</span>
+              </div>
+            </div>
+            
+            <div class="transaction-amount" [class.credit]="transaction.type === 'credit'" [class.debit]="transaction.type === 'debit'">
+              {{ transaction.type === 'credit' ? '+' : '-' }} {{ transaction.points | number }} pts
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #noTransactions>
+          <app-empty-state
+            title="No Transactions"
+            description="You haven't made any transactions yet.">
+            <div icon>💰</div>
+            <div action>
+              <button routerLink="/wallet/add-points" class="btn btn-primary">
+                Add Points
+              </button>
+            </div>
+          </app-empty-state>
+        </ng-template>
+      </div>
+      
+      <!-- Quick Stats -->
+      <div class="stats-section">
+        <h2>Wallet Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Added</div>
+            <div class="stat-value">{{ totalAdded | number }} pts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Spent</div>
+            <div class="stat-value">{{ totalSpent | number }} pts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Contest Entries</div>
+            <div class="stat-value">{{ contestEntries }}</div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,21 +1,33 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
+import { PaginatedResponse } from '../core/models/api-response.model';
+import { PointTransaction } from '../core/models/points.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PointsService {
-
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private apiUrl = environment.apiUrl;
- 
 
-  getBalance() : Observable<any>{
-  return this.http.get<any>( this.apiUrl + '/points/balance' );
-}
+  getBalance(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/points/balance');
+  }
 
+  getTransactions(
+    page: number = 1,
+    limit: number = 10
+  ): Observable<PaginatedResponse<PointTransaction>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
 
+    return this.http.get<PaginatedResponse<PointTransaction>>(
+      this.apiUrl + '/points/transactions',
+      { params }
+    );
+  }
 }

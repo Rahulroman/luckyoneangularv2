@@ -4,9 +4,12 @@ export interface User {
   email: string;            // User email
   fullName: string;         // Display name
   phoneNumber?: string;     // Optional phone number
-  role: 'Admin' | 'User';   // User role (only two possible values)
+  role : 'Admin' | 'User';   // User role (only two possible values)
   createdAt: string;        // When user was created (ISO date string)
   isActive: boolean;        // Whether user account is active
+  updatedAt: string;        // When user was last updated (ISO date string)
+  points: number;          // User points for gamification
+  avatar?: string;     // Optional URL to user's avatar image
 }
 
 export interface AuthUser extends User {

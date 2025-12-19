@@ -19,6 +19,7 @@ appUrl = environment.apiUrl;
   currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
+
   login(credentials: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(  this.appUrl +'/auth/login', credentials).pipe(
       tap(response => {
@@ -57,5 +58,11 @@ forgotPassword(email : string) : Observable<any>{
         localStorage.removeItem('user');
         this.currentUserSubject.next(null);
    }
+
+updateUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
+
 
 }
