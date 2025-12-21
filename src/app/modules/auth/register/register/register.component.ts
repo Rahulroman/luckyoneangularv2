@@ -50,11 +50,17 @@ export class RegisterComponent {
       return;
     }
 
+    this.userData.phoneNumber = this.userData.phoneNumber.toString();
+
     this.isLoading = true;
     this.loadingService.show();
 
     this.authService.register(this.userData).subscribe({
       next: (response) => {
+
+        console.log(response);
+
+
         this.notificationService.showSuccess('Account created successfully');
         this.router.navigate(['/dashboard']);
         this.isLoading = false;

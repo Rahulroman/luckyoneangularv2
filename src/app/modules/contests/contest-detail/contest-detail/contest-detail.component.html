@@ -1,1 +1,194 @@
-<p>contest-detail works!</p>
+  <div *ngIf="contest; else loading">
+      <app-page-header 
+        [title]="contest.title" 
+        [subtitle]="contest.description"
+        [showBackButton]="true">
+      </app-page-header>
+      
+      <div class="contest-detail">
+        <!-- Contest Banner -->
+        <div class="contest-banner" [style.backgroundImage]="'url(' + (contest.bannerImage || 'assets/images/contest-banner.jpg') + ')'">
+          <div class="banner-overlay">
+            <div class="contest-status" [class]="contest.status">
+              {{ contest.status  }}
+            </div>
+            <div class="contest-meta">
+              <div class="meta-item">
+                <span class="meta-icon">⚡</span>
+                <span class="meta-text">{{ contest.entryPoints }} Points Entry</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">👥</span>
+                <span class="meta-text">{{ contest.currentParticipants }}/{{ contest.maxParticipants }} Participants</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contest-content">
+          <div class="main-content">
+            <!-- Contest Info -->
+            <div class="info-section">
+              <h2>Contest Details</h2>
+              <div class="info-grid">
+                <div class="info-item">
+                  <div class="info-label">Start Date</div>
+                  <div class="info-value">{{ contest.startDate | date:'medium' }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">End Date</div>
+                  <div class="info-value">{{ contest.endDate | date:'medium' }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Created By</div>
+                  <div class="info-value">{{ contest.createdBy }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Created On</div>
+                  <div class="info-value">{{ contest.createdAt | date:'medium' }}</div>
+                </div>
+              </div>
+              
+              <div class="description">
+                <h3>Description</h3>
+                <p>{{ contest.description }}</p>
+              </div>
+            </div>
+            
+            <!-- Countdown Timer -->
+            <div *ngIf="contest.status === 'upcoming' || contest.status === 'active'" class="timer-section">
+              <app-countdown-timer 
+                [targetDate]="contest.endDate"
+                [label]="contest.status === 'upcoming' ? 'Starts In' : 'Time Remaining'">
+              </app-countdown-timer>
+            </div>
+            
+            <!-- Participants -->
+            <div class="participants-section">
+              <h2>Participants ({{ participants.length }})</h2>
+              <div *ngIf="participants.length > 0; else noParticipants" class="participants-list">
+                <div *ngFor="let participant of participants" class="participant-card">
+                  <img 
+                    [src]="participant.avatar || 'assets/images/avatar-placeholder.png'" 
+                    [alt]="participant.username"
+                    class="participant-avatar">
+                  <div class="participant-info">
+                    <div class="participant-name">{{ participant.username }}</div>
+                    <div class="participant-meta">
+                      Joined {{ participant.joinedAt  | timeAgo }}
+                      <span *ngIf="participant.position" class="position-badge">
+                        #{{ participant.position }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="participant-points">
+                    {{ participant.pointsSpent | number }} pts
+                  </div>
+                </div>
+              </div>
+              
+              <ng-template #noParticipants>
+                <app-empty-state
+                  title="No Participants Yet"
+                  description="Be the first to join this contest!">
+                  <div icon>👥</div>
+                </app-empty-state>
+              </ng-template>
+            </div>
+          </div>
+          
+          <!-- Sidebar -->
+          <div class="sidebar">
+            <!-- Points Display -->
+            <div class="sidebar-card">
+              <app-points-display 
+                [points]="userPoints"
+                label="Your Balance">
+              </app-points-display>
+            </div>
+            
+            <!-- Action Card -->
+            <div class="sidebar-card">
+              <div class="action-card">
+                <h3>Contest Actions</h3>
+                
+                <div *ngIf="contest.status === 'upcoming'" class="contest-status-info">
+                  <div class="status-message">⏳ This contest starts soon</div>
+                </div>
+                
+                <div *ngIf="contest.status === 'active'" class="contest-status-info">
+                  <div *ngIf="hasJoined; else joinSection" class="joined-info">
+                    <div class="status-message success">✅ You have joined this contest</div>
+                    <button 
+                      [routerLink]="['/my-contests']" 
+                      class="btn btn-primary">
+                      View My Contests
+                    </button>
+                  </div>
+                  
+                  <ng-template #joinSection>
+                    <div class="join-info">
+                      <div class="points-required">
+                        <strong>{{ contest.entryPoints | number }}</strong> points required to join
+                      </div>
+                      <div class="spots-remaining">
+                        {{ contest.maxParticipants - contest.currentParticipants }} spots left
+                      </div>
+                      <button 
+                        (click)="joinContest()"
+                        [disabled]="userPoints < contest.entryPoints || isLoading"
+                        class="btn btn-success">
+                        <span *ngIf="!isLoading">Join Contest</span>
+                        <span *ngIf="isLoading">Joining...</span>
+                      </button>
+                      
+                      <div *ngIf="userPoints < contest.entryPoints" class="insufficient-points">
+                        ❌ Insufficient points
+                        <a routerLink="/wallet/add-points">Add Points</a>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+                
+                <div *ngIf="contest.status === 'completed'" class="contest-status-info">
+                  <div *ngIf="contest.winnerId" class="winner-info">
+                    <div class="winner-label">🏆 Winner</div>
+                    <div class="winner-name">{{ contest.winnerUsername }}</div>
+                  </div>
+                  <div *ngIf="hasJoined" class="joined-info">
+                    <div class="status-message">🎉 You participated in this contest</div>
+                  </div>
+                  <div *ngIf="!hasJoined" class="not-joined-info">
+                    <div class="status-message">🏁 Contest has ended</div>
+                  </div>
+                </div>
+                
+                <div *ngIf="contest.status === 'cancelled'" class="contest-status-info">
+                  <div class="status-message">❌ Contest has been cancelled</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Share Contest -->
+            <div class="sidebar-card">
+              <div class="share-contest">
+                <h3>Share Contest</h3>
+                <div class="share-buttons">
+                  <button class="share-btn facebook">f</button>
+                  <button class="share-btn twitter">𝕏</button>
+                  <button class="share-btn whatsapp">W</button>
+                  <button class="share-btn link" (click)="copyLink()">🔗</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <ng-template #loading>
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading contest details...</div>
+      </div>
+    </ng-template>

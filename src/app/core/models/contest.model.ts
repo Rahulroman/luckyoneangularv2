@@ -37,6 +37,17 @@ export interface CreateContestRequest {
 }
 
 
+export interface ContestParticipant {
+  id: string;
+  contestId: string;
+  userId: string;
+  username: string;
+  avatar?: string;
+  pointsSpent: number;
+  joinedAt: Date;
+  position?: number;
+}
+
 // Request to join a contest
 export interface JoinContestRequest {
   contestId: number;      // ID of contest to join

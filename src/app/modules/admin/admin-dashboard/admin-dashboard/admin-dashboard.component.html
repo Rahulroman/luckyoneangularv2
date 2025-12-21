@@ -1,1 +1,112 @@
-<p>admin-dashboard works!</p>
+  <app-page-header 
+      title="Admin Dashboard" 
+      subtitle="Manage contests, users, and platform settings">
+    </app-page-header>
+    
+    <div class="admin-dashboard">
+      <!-- Stats Overview -->
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ totalContests }}</div>
+            <div class="stat-label">Total Contests</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ activeUsers }}</div>
+            <div class="stat-label">Active Users</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ totalRevenue | currency }}</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">📈</div>
+          <div class="stat-content">
+            <div class="stat-value">{{ completionRate }}%</div>
+            <div class="stat-label">Completion Rate</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="actions-grid">
+          <a routerLink="/admin/create-contest" class="action-card">
+            <div class="action-icon">➕</div>
+            <div class="action-text">Create Contest</div>
+          </a>
+          
+          <a routerLink="/admin/manage-contests" class="action-card">
+            <div class="action-icon">📋</div>
+            <div class="action-text">Manage Contests</div>
+          </a>
+          
+          <a routerLink="/admin/manage-users" class="action-card">
+            <div class="action-icon">👥</div>
+            <div class="action-text">Manage Users</div>
+          </a>
+          
+          <a routerLink="/admin/reports" class="action-card">
+            <div class="action-icon">📊</div>
+            <div class="action-text">View Reports</div>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Recent Activity -->
+      <div class="recent-activity">
+        <h2>Recent Activity</h2>
+        <div class="activity-list">
+          <div *ngFor="let activity of recentActivities" class="activity-item">
+            <div class="activity-icon">{{ activity.icon }}</div>
+            <div class="activity-content">
+              <div class="activity-message">{{ activity.message }}</div>
+              <div class="activity-time">{{ activity.time }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pending Actions -->
+      <div class="pending-actions">
+        <h2>Pending Actions</h2>
+        <div *ngIf="pendingContests.length > 0; else noPendingActions" class="pending-list">
+          <div *ngFor="let contest of pendingContests" class="pending-item">
+            <div class="pending-content">
+              <h3>{{ contest.title }}</h3>
+              <p>{{ contest.description  }}</p>
+              <div class="pending-meta">
+                <span>Ends: {{ contest.endDate | date:'short' }}</span>
+                <span>{{ contest.currentParticipants }}/{{ contest.maxParticipants }} participants</span>
+              </div>
+            </div>
+            <div class="pending-actions">
+              <button 
+                [routerLink]="['/admin/declare-winner', contest.id]"
+                class="btn btn-primary">
+                Declare Winner
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #noPendingActions>
+          <div class="empty-state">
+            <div class="empty-icon">🎉</div>
+            <div class="empty-text">No pending actions at the moment</div>
+          </div>
+        </ng-template>
+      </div>
+    </div>

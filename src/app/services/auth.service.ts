@@ -31,7 +31,8 @@ appUrl = environment.apiUrl;
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(  this.appUrl +'/auth/register' , userData).pipe(
+    
+    return this.http.post<AuthResponse>(  this.appUrl +'/Auth/register' , userData).pipe(
       tap( response => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
@@ -52,6 +53,12 @@ forgotPassword(email : string) : Observable<any>{
        const userStr = localStorage.getItem('USER');
         return userStr ? JSON.parse(userStr) : null;
   }
+
+getToken() {
+  const token = localStorage.getItem('token');
+  return token;
+}
+
 
    logout() {
       localStorage.removeItem('token');

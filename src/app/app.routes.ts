@@ -2,11 +2,14 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout/main-layout.component';
 import { Component } from '@angular/core';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout/auth-layout.component';
+import { ManageUsersComponent } from './modules/admin/manage-users/manage-users.component';
+import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        component: MainLayoutComponent,
+        component: MainLayoutComponent, canActivate : [authGuard],
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', loadComponent: () => import('./modules/dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent) },
@@ -50,6 +53,9 @@ export const routes: Routes = [
                     },
                     {
                         path: 'manage-contests', loadComponent: () => import('./modules/admin/manage-contests/manage-contests/manage-contests.component').then(m => m.ManageContestsComponent)
+                    },
+                    {
+                        path : 'manage-users' , loadComponent : () => import('./modules/admin/manage-users/manage-users.component').then(m => m.ManageUsersComponent)
                     },
                     {
                         path: 'declare-winners', loadComponent: () => import('./modules/admin/declare-winners/declare-winners/declare-winners.component').then(m => m.DeclareWinnersComponent)
@@ -108,7 +114,7 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        component: AuthLayoutComponent,
+        component: AuthLayoutComponent, canActivate : [authGuard , roleGuard],
         children: [
             {
                 path: 'login',
