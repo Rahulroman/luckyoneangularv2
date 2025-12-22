@@ -28,12 +28,12 @@ export interface ContestSlot {
 
 // Request to create a new contest (Admin only)
 export interface CreateContestRequest {
-  contestName: string;
-  startTime: string;
-  endTime: string;
+  title: string;
+  description: string;
   entryPoints: number;
-  totalSlots: number;
-  winningPoints: number;
+  maxParticipants: number;
+  startDate: Date;
+  endDate: Date;
 }
 
 

@@ -37,15 +37,15 @@
             </div>
             
             <div class="transaction-details">
-              <div class="transaction-description">{{ transaction.remarks }}</div>
+              <div class="transaction-description">{{ transaction.type }}</div>
               <div class="transaction-meta">
-                <span class="transaction-date">{{ transaction.transactionDate| date:'medium' }}</span>
+                <span class="transaction-date">{{ transaction.createdAt| date:'medium' }}</span>
                 <span *ngIf="transaction.contestId" class="contest-badge">Contest</span>
               </div>
             </div>
             
             <div class="transaction-amount" [class.credit]="transaction.type === 'credit'" [class.debit]="transaction.type === 'debit'">
-              {{ transaction.type === 'credit' ? '+' : '-' }} {{ transaction.points | number }} pts
+              {{ transaction.type === 'credit' ? '+' : '-' }} {{ transaction.amount| number }} pts
             </div>
           </div>
         </div>

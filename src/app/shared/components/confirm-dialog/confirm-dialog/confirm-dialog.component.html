@@ -1,1 +1,21 @@
-<p>confirm-dialog works!</p>
+   <div *ngIf="visible" class="confirm-dialog-overlay">
+      <div class="confirm-dialog">
+        <div class="dialog-header">
+          <h3>{{ title }}</h3>
+          <button (click)="close()" class="close-btn">×</button>
+        </div>
+        
+        <div class="dialog-body">
+          <p>{{ message }}</p>
+        </div>
+        
+        <div class="dialog-footer">
+          <button (click)="close()" class="btn btn-secondary">
+            {{ cancelText }}
+          </button>
+          <button (click)="confirm()" class="btn btn-primary" [class.danger]="type === 'danger'">
+            {{ confirmText }}
+          </button>
+        </div>
+      </div>
+    </div>

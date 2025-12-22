@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../core/models/api-response.model';
-import { PointTransaction } from '../core/models/points.model';
+import { PointsTransaction } from '../core/models/points.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +20,12 @@ export class PointsService {
   getTransactions(
     page: number = 1,
     limit: number = 10
-  ): Observable<PaginatedResponse<PointTransaction>> {
+  ): Observable<PaginatedResponse<PointsTransaction>> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this.http.get<PaginatedResponse<PointTransaction>>(
+    return this.http.get<PaginatedResponse<PointsTransaction>>(
       this.apiUrl + '/points/transactions',
       { params }
     );

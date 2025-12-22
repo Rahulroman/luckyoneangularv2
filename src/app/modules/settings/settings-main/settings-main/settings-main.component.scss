@@ -1,0 +1,366 @@
+  .settings-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .settings-sidebar {
+      background: #f8f9fa;
+      border-right: 1px solid #e0e0e0;
+    }
+    
+    .sidebar-menu {
+      padding: 1rem 0;
+    }
+    
+    .menu-item {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: none;
+      border: none;
+      border-left: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+      
+      &:hover {
+        background: #e9ecef;
+      }
+      
+      &.active {
+        background: #e3f2fd;
+        border-left-color: #3498db;
+        color: #3498db;
+      }
+    }
+    
+    .menu-icon {
+      font-size: 1.25rem;
+      width: 24px;
+      text-align: center;
+    }
+    
+    .menu-text {
+      font-weight: 500;
+      color: inherit;
+    }
+    
+    .settings-content {
+      padding: 2rem;
+    }
+    
+    .settings-section {
+      margin-bottom: 2rem;
+      
+      h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 2rem;
+      }
+    }
+    
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #e0e0e0;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    .setting-info {
+      flex: 1;
+      
+      h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+      
+      p {
+        color: #666;
+        font-size: 0.875rem;
+        line-height: 1.5;
+      }
+    }
+    
+    .setting-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+      
+      &:before {
+        position: absolute;
+        content: "";
+        height: 22px;
+        width: 22px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+    }
+    
+    input:checked + .toggle-slider {
+      background-color: #3498db;
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(30px);
+    }
+    
+    .toggle-label {
+      font-weight: 500;
+      color: #333;
+      min-width: 80px;
+    }
+    
+    .notification-group {
+      margin-bottom: 2rem;
+      
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+    }
+    
+    .notification-options {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      color: #333;
+      
+      input {
+        display: none;
+      }
+      
+      .checkmark {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        position: relative;
+        transition: all 0.3s ease;
+        
+        &:after {
+          content: "";
+          position: absolute;
+          display: none;
+          left: 6px;
+          top: 2px;
+          width: 5px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+      }
+      
+      input:checked + .checkmark {
+        background: #3498db;
+        border-color: #3498db;
+        
+        &:after {
+          display: block;
+        }
+      }
+    }
+    
+    .theme-options {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    .theme-option {
+      padding: 0.75rem 1rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      min-width: 80px;
+      
+      &:hover {
+        border-color: #3498db;
+      }
+      
+      &.active {
+        border-color: #3498db;
+        background: #e3f2fd;
+      }
+      
+      &.light .theme-icon {
+        color: #f39c12;
+      }
+      
+      &.dark .theme-icon {
+        color: #2c3e50;
+      }
+    }
+    
+    .language-select, .visibility-select {
+      padding: 0.75rem 1rem;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      min-width: 200px;
+      background: white;
+      
+      &:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+    }
+    
+    .settings-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e0e0e0;
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        
+        &.btn-primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          
+          &:hover:not(:disabled) {
+            opacity: 0.9;
+          }
+        }
+        
+        &.btn-secondary {
+          background: #f8f9fa;
+          color: #333;
+          border: 2px solid #ddd;
+          
+          &:hover {
+            background: #e9ecef;
+          }
+        }
+        
+        &.btn-danger {
+          background: #e74c3c;
+          color: white;
+          
+          &:hover {
+            background: #c0392b;
+          }
+        }
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .settings-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .settings-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      
+      .sidebar-menu {
+        display: flex;
+        overflow-x: auto;
+        padding: 0;
+        
+        .menu-item {
+          white-space: nowrap;
+          border-left: none;
+          border-bottom: 3px solid transparent;
+          
+          &.active {
+            border-left: none;
+            border-bottom-color: #3498db;
+          }
+        }
+      }
+      
+      .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .setting-control {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .theme-options {
+        width: 100%;
+        
+        .theme-option {
+          flex: 1;
+        }
+      }
+      
+      .language-select, .visibility-select {
+        width: 100%;
+      }
+    }

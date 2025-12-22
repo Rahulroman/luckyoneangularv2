@@ -1,1 +1,234 @@
-<p>settings-main works!</p>
+  <app-page-header 
+      title="Settings" 
+      subtitle="Customize your experience"
+      [showBackButton]="true">
+    </app-page-header>
+ 
+
+    <div class="settings-container">
+      <div class="settings-sidebar">
+        <div class="sidebar-menu">
+          <button 
+            *ngFor="let section of sections"
+            (click)="selectSection(section.id)"
+            [class.active]="activeSection === section.id"
+            class="menu-item">
+            <span class="menu-icon">{{ section.icon }}</span>
+            <span class="menu-text">{{ section.name }}</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="settings-content">
+        <!-- Account Settings -->
+        <div *ngIf="activeSection === 'account'" class="settings-section">
+          <h2>Account Settings</h2>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Account Privacy</h3>
+              <p>Control who can see your profile and activity</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle-switch">
+                <input type="checkbox" [(ngModel)]="settings.privacy.publicProfile">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">
+                {{ settings.privacy.publicProfile ? 'Public' : 'Private' }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Email Notifications</h3>
+              <p>Receive emails about contests, winners, and promotions</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle-switch">
+                <input type="checkbox" [(ngModel)]="settings.notifications.email">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">
+                {{ settings.notifications.email ? 'On' : 'Off' }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Two-Factor Authentication</h3>
+              <p>Add an extra layer of security to your account</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle-switch">
+                <input type="checkbox" [(ngModel)]="settings.security.twoFactor">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">
+                {{ settings.security.twoFactor ? 'Enabled' : 'Disabled' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Notification Settings -->
+        <div *ngIf="activeSection === 'notifications'" class="settings-section">
+          <h2>Notification Preferences</h2>
+          
+          <div class="notification-group">
+            <h3>Contest Notifications</h3>
+            <div class="notification-options">
+              <label class="checkbox-option">
+                <input type="checkbox" [(ngModel)]="settings.notifications.contestStart">
+                <span class="checkmark"></span>
+                Contest start reminders
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" [(ngModel)]="settings.notifications.contestEnd">
+                <span class="checkmark"></span>
+                Contest end notifications
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" [(ngModel)]="settings.notifications.winnerAnnouncement">
+                <span class="checkmark"></span>
+                Winner announcements
+              </label>
+            </div>
+          </div>
+          
+          <div class="notification-group">
+            <h3>Account Notifications</h3>
+            <div class="notification-options">
+              <label class="checkbox-option">
+                <input type="checkbox" [(ngModel)]="settings.notifications.pointsUpdate">
+                <span class="checkmark"></span>
+                Points balance updates
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" [(ngModel)]="settings.notifications.transaction">
+                <span class="checkmark"></span>
+                Transaction confirmations
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" [(ngModel)]="settings.notifications.promotional">
+                <span class="checkmark"></span>
+                Promotional offers
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Display Settings -->
+        <div *ngIf="activeSection === 'display'" class="settings-section">
+          <h2>Display Settings</h2>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Theme</h3>
+              <p>Choose between light and dark mode</p>
+            </div>
+            <div class="setting-control">
+              <div class="theme-options">
+                <button 
+                  (click)="setTheme('light')"
+                  [class.active]="settings.display.theme === 'light'"
+                  class="theme-option light">
+                  <span class="theme-icon">☀️</span>
+                  <span class="theme-name">Light</span>
+                </button>
+                <button 
+                  (click)="setTheme('dark')"
+                  [class.active]="settings.display.theme === 'dark'"
+                  class="theme-option dark">
+                  <span class="theme-icon">🌙</span>
+                  <span class="theme-name">Dark</span>
+                </button>
+                <button 
+                  (click)="setTheme('auto')"
+                  [class.active]="settings.display.theme === 'auto'"
+                  class="theme-option auto">
+                  <span class="theme-icon">⚙️</span>
+                  <span class="theme-name">Auto</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Language</h3>
+              <p>Select your preferred language</p>
+            </div>
+            <div class="setting-control">
+              <select [(ngModel)]="settings.display.language" class="language-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="ja">日本語</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Privacy Settings -->
+        <div *ngIf="activeSection === 'privacy'" class="settings-section">
+          <h2>Privacy Settings</h2>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Data Sharing</h3>
+              <p>Allow sharing of anonymous usage data to improve our services</p>
+            </div>
+            <div class="setting-control">
+              <label class="toggle-switch">
+                <input type="checkbox" [(ngModel)]="settings.privacy.dataSharing">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">
+                {{ settings.privacy.dataSharing ? 'Allowed' : 'Disabled' }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Activity Visibility</h3>
+              <p>Choose who can see your contest participation and wins</p>
+            </div>
+            <div class="setting-control">
+              <select [(ngModel)]="settings.privacy.activityVisibility" class="visibility-select">
+                <option value="public">Everyone</option>
+                <option value="friends">Friends Only</option>
+                <option value="private">Only Me</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Delete Account</h3>
+              <p>Permanently delete your account and all associated data</p>
+            </div>
+            <div class="setting-control">
+              <button (click)="deleteAccount()" class="btn btn-danger">
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="settings-actions">
+          <button (click)="resetSettings()" class="btn btn-secondary">
+            Reset to Default
+          </button>
+          <button (click)="saveSettings()" [disabled]="isLoading" class="btn btn-primary">
+            <span *ngIf="!isLoading">Save Changes</span>
+            <span *ngIf="isLoading">Saving...</span>
+          </button>
+        </div>
+      </div>
+    </div>

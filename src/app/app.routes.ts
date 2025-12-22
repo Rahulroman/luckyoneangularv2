@@ -9,7 +9,7 @@ import { roleGuard } from './core/guards/role.guard';
 export const routes: Routes = [
     {
         path: '',
-        component: MainLayoutComponent, canActivate : [authGuard],
+        component: MainLayoutComponent, // canActivate : [authGuard],
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', loadComponent: () => import('./modules/dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent) },
@@ -114,7 +114,7 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        component: AuthLayoutComponent, canActivate : [authGuard , roleGuard],
+        component: AuthLayoutComponent, //canActivate : [authGuard , roleGuard],
         children: [
             {
                 path: 'login',

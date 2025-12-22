@@ -1,1 +1,172 @@
-<p>create-contest works!</p>
+ <app-page-header 
+      title="Create Contest" 
+      subtitle="Setup a new contest for users to join"
+      [showBackButton]="true">
+    </app-page-header>
+    
+    <div class="create-contest">
+      <div class="contest-form">
+        <form #contestForm="ngForm" (ngSubmit)="createContest()">
+          <!-- Contest Title -->
+          <div class="form-group">
+            <label for="title">Contest Title *</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              [(ngModel)]="contestData.title"
+              required
+              placeholder="Enter contest title"
+              class="form-control"
+            />
+            <div *ngIf="contestForm.submitted && !contestData.title" class="error-message">
+              Contest title is required
+            </div>
+          </div>
+          
+          <!-- Contest Description -->
+          <div class="form-group">
+            <label for="description">Description *</label>
+            <textarea
+              id="description"
+              name="description"
+              [(ngModel)]="contestData.description"
+              required
+              rows="4"
+              placeholder="Describe the contest rules and prizes"
+              class="form-control"
+            ></textarea>
+            <div *ngIf="contestForm.submitted && !contestData.description" class="error-message">
+              Contest description is required
+            </div>
+          </div>
+          
+          <!-- Entry Points -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="entryPoints">Entry Points *</label>
+              <input
+                type="text"
+                id="entryPoints"
+                name="entryPoints"
+                [(ngModel)]="contestData.entryPoints"
+                required
+                appNumericOnly
+                placeholder="Points required to join"
+                class="form-control"
+              />
+              <div *ngIf="contestForm.submitted && !contestData.entryPoints" class="error-message">
+                Entry points are required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="maxParticipants">Max Participants *</label>
+              <input
+                type="text"
+                id="maxParticipants"
+                name="maxParticipants"
+                [(ngModel)]="contestData.maxParticipants"
+                required
+                appNumericOnly
+                placeholder="Maximum number of participants"
+                class="form-control"
+              />
+              <div *ngIf="contestForm.submitted && !contestData.maxParticipants" class="error-message">
+                Maximum participants is required
+              </div>
+            </div>
+          </div>
+          
+          <!-- Dates -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startDate">Start Date *</label>
+              <input
+                type="datetime-local"
+                id="startDate"
+                name="startDate"
+                [(ngModel)]="contestData.startDate"
+                required
+                class="form-control"
+              />
+              <div *ngIf="contestForm.submitted && !contestData.startDate" class="error-message">
+                Start date is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="endDate">End Date *</label>
+              <input
+                type="datetime-local"
+                id="endDate"
+                name="endDate"
+                [(ngModel)]="contestData.endDate"
+                required
+                class="form-control"
+              />
+              <div *ngIf="contestForm.submitted && !contestData.endDate" class="error-message">
+                End date is required
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contest Banner (Optional) -->
+          <div class="form-group">
+            <label for="bannerImage">Banner Image URL (Optional)</label>
+            <input
+              type="url"
+              id="bannerImage"
+              name="bannerImage"
+              [(ngModel)]="bannerImage"
+              placeholder="https://example.com/banner.jpg"
+              class="form-control"
+            />
+            <div class="hint">Provide a direct link to the banner image</div>
+          </div>
+          
+          <!-- Preview Section -->
+          <div class="preview-section">
+            <h3>Contest Preview</h3>
+            <div class="preview-card">
+              <div class="preview-banner" [style.backgroundImage]="'url(' + (bannerImage || 'assets/images/contest-banner.jpg') + ')'"></div>
+              <div class="preview-content">
+                <h4>{{ contestData.title || 'Contest Title' }}</h4>
+                <p class="preview-description">{{ contestData.description || 'Contest description will appear here...' }}</p>
+                <div class="preview-details">
+                  <div class="detail">
+                    <span class="label">Entry:</span>
+                    <span class="value">{{ contestData.entryPoints || '0' }} points</span>
+                  </div>
+                  <div class="detail">
+                    <span class="label">Max:</span>
+                    <span class="value">{{ contestData.maxParticipants || '0' }} participants</span>
+                  </div>
+                  <div class="detail">
+                    <span class="label">Duration:</span>
+                    <span class="value">
+                      {{ contestData.startDate ? (contestData.startDate | date:'short') : 'Start date' }} - 
+                      {{ contestData.endDate ? (contestData.endDate | date:'short') : 'End date' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button type="button" (click)="cancel()" class="btn btn-secondary">
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              [disabled]="isLoading || !canSubmit()"
+              class="btn btn-primary">
+              <span *ngIf="!isLoading">Create Contest</span>
+              <span *ngIf="isLoading">Creating...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>

@@ -1,0 +1,184 @@
+ .create-contest {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .contest-form {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #333;
+      }
+      
+      .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: #3498db;
+        }
+        
+        &.ng-invalid.ng-touched {
+          border-color: #e74c3c;
+        }
+      }
+      
+      textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+      }
+      
+      .error-message {
+        color: #e74c3c;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+      
+      .hint {
+        font-size: 0.875rem;
+        color: #666;
+        margin-top: 0.25rem;
+      }
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    .preview-section {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+    }
+    
+    .preview-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .preview-banner {
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      background-color: #e0e0e0;
+    }
+    
+    .preview-content {
+      padding: 1.5rem;
+      
+      h4 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.75rem;
+      }
+    }
+    
+    .preview-description {
+      color: #666;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    
+    .preview-details {
+      display: grid;
+      gap: 0.75rem;
+    }
+    
+    .detail {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      
+      .label {
+        color: #666;
+        font-weight: 500;
+      }
+      
+      .value {
+        color: #333;
+        font-weight: 600;
+      }
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      
+      .btn {
+        flex: 1;
+        padding: 1rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        
+        &.btn-primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          
+          &:hover:not(:disabled) {
+            opacity: 0.9;
+          }
+        }
+        
+        &.btn-secondary {
+          background: #f8f9fa;
+          color: #333;
+          border: 2px solid #ddd;
+          
+          &:hover {
+            background: #e9ecef;
+          }
+        }
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .contest-form {
+        padding: 1.5rem;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+      }
+    }

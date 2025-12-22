@@ -8,14 +8,13 @@ export interface PointWallet {
 }
 
 
-export interface PointTransaction {
-  transactionId: number;          // Unique transaction ID
-  userId: number;                 // Which user
-  type: 'credit' | 'debit'; // Add or subtract points
-  points: number;                 // Amount of points
-  transactionFor: string;         // Reason: "ContestJoin", "ContestWin", etc.
-  referenceId?: number;           // Optional: ID of contest/related item
-  remarks: string;                // Description
-  transactionDate: string;        // When transaction occurred
-  contestId?: string;             // Optional: ID of contest/related item
+export interface PointsTransaction {
+  id: string;
+  userId: string;
+  amount: number;
+  type: 'credit' | 'debit';
+  description: string;
+  contestId?: string;
+  referenceId?: string;
+  createdAt: Date;
 }

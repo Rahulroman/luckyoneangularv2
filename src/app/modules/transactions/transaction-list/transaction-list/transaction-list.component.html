@@ -1,1 +1,141 @@
-<p>transaction-list works!</p>
+<app-page-header 
+      title="Transactions" 
+      subtitle="View your points transaction history">
+    </app-page-header>
+    
+    <div class="transaction-list">
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-group">
+          <label>Type:</label>
+          <select [(ngModel)]="selectedType" (change)="loadTransactions()">
+            <option value="">All</option>
+            <option value="credit">Credits</option>
+            <option value="debit">Debits</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Month:</label>
+          <select [(ngModel)]="selectedMonth" (change)="loadTransactions()">
+            <option value="">All Time</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Year:</label>
+          <select [(ngModel)]="selectedYear" (change)="loadTransactions()">
+            <option value="">All</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Summary -->
+      <div class="summary-cards">
+        <div class="summary-card total">
+          <div class="summary-label">Total Transactions</div>
+          <div class="summary-value">{{ totalItems }}</div>
+        </div>
+        <div class="summary-card credit">
+          <div class="summary-label">Total Credits</div>
+          <div class="summary-value">{{ totalCredits | number }} pts</div>
+        </div>
+        <div class="summary-card debit">
+          <div class="summary-label">Total Debits</div>
+          <div class="summary-value">{{ totalDebits | number }} pts</div>
+        </div>
+      </div>
+      
+      <!-- Transactions Table -->
+      <div *ngIf="transactions.length > 0; else noTransactions" class="transactions-table">
+        <div class="table-header">
+          <div class="header-cell description">Description</div>
+          <div class="header-cell type">Type</div>
+          <div class="header-cell amount">Amount</div>
+          <div class="header-cell date">Date</div>
+          <div class="header-cell actions">Actions</div>
+        </div>
+        
+        <div class="table-body">
+          <div *ngFor="let transaction of transactions" class="table-row">
+            <div class="cell description">
+              <div class="transaction-description">{{ transaction.description }}</div>
+              <div *ngIf="transaction.contestId" class="contest-info">
+                Contest Entry
+              </div>
+            </div>
+            
+            <div class="cell type">
+              <span class="type-badge" [class.credit]="transaction.type === 'credit'" [class.debit]="transaction.type === 'debit'">
+                {{ transaction.type | uppercase }}
+              </span>
+            </div>
+            
+            <div class="cell amount" [class.credit]="transaction.type === 'credit'" [class.debit]="transaction.type === 'debit'">
+              {{ transaction.type === 'credit' ? '+' : '-' }} {{ transaction.amount | number }} pts
+            </div>
+            
+            <div class="cell date">
+              {{ transaction.createdAt | date:'medium' }}
+            </div>
+            
+            <div class="cell actions">
+              <button 
+                [routerLink]="['/transactions', transaction.id]"
+                class="btn btn-sm btn-secondary">
+                Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noTransactions>
+        <app-empty-state
+          title="No Transactions Found"
+          description="You haven't made any transactions yet.">
+          <div icon>💰</div>
+          <div action>
+            <button routerLink="/wallet/add-points" class="btn btn-primary">
+              Add Points
+            </button>
+          </div>
+        </app-empty-state>
+      </ng-template>
+      
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="pagination">
+        <button 
+          (click)="prevPage()" 
+          [disabled]="currentPage === 1"
+          class="page-btn">
+          ← Previous
+        </button>
+        
+        <span class="page-info">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+        
+        <button 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages"
+          class="page-btn">
+          Next →
+        </button>
+      </div>
+    </div>

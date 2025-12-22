@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state/empty-state.component';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header/page-header.component';
 import { PointsDisplayComponent } from '../../../../shared/components/points-display/points-display/points-display.component';
-import { PointTransaction } from '../../../../core/models/points.model';
+import { PointsTransaction } from '../../../../core/models/points.model';
 import { PointsService } from '../../../../services/points.service';
 import { AuthService } from '../../../../services/auth.service';
 import { transition } from '@angular/animations';
@@ -14,14 +14,14 @@ import { transition } from '@angular/animations';
 @Component({
   selector: 'app-wallet-dashboard',
   standalone: true,
-  imports: [CommonModule,FormsModule ,EmptyStateComponent, PageHeaderComponent, PointsDisplayComponent],
+  imports: [CommonModule, FormsModule, EmptyStateComponent, PageHeaderComponent, PointsDisplayComponent, RouterLink],
   templateUrl: './wallet-dashboard.component.html',
   styleUrl: './wallet-dashboard.component.scss'
 })
 export class WalletDashboardComponent {
 
   balance = 0;
-  recentTransactions: PointTransaction[] = [];
+  recentTransactions: PointsTransaction[] = [];
   totalAdded : number = 0;
   totalSpent = 0;
   contestEntries = 0;
@@ -56,10 +56,10 @@ export class WalletDashboardComponent {
     });
   }
 
-  private calculateStats(transactions: PointTransaction[]) {
+  private calculateStats(transactions: PointsTransaction[]) {
 
-      this.totalAdded = transactions.filter(t => t.type == 'credit').reduce( (sum , t) => sum + t.points,0);
-      this.totalSpent =transactions.filter(t => t.type == 'debit').reduce((sum , t ) => sum + t.points,0);
+      this.totalAdded = transactions.filter(t => t.type == 'credit').reduce( (sum , t) => sum + t.amount,0);
+      this.totalSpent =transactions.filter(t => t.type == 'debit').reduce((sum , t ) => sum + t.amount,0);
       this.contestEntries = transactions.filter(t => t.contestId && t.type == 'debit').length;
     }
 

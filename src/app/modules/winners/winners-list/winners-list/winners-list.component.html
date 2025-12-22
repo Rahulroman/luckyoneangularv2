@@ -1,1 +1,120 @@
-<p>winners-list works!</p>
+  <app-page-header 
+      title="Winners" 
+      subtitle="Celebrating our contest champions">
+    </app-page-header>
+    
+    <div class="winners-list">
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-group">
+          <label>Filter by:</label>
+          <select [(ngModel)]="selectedFilter" (change)="loadWinners()">
+            <option value="">All Winners</option>
+            <option value="recent">Recent Winners</option>
+            <option value="top">Top Winners</option>
+            <option value="month">This Month</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Sort by:</label>
+          <select [(ngModel)]="sortBy" (change)="loadWinners()">
+            <option value="recent">Most Recent</option>
+            <option value="points">Prize Points</option>
+            <option value="participants">Contest Size</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Winners Grid -->
+      <div *ngIf="winners.length > 0; else noWinners" class="winners-grid">
+        <div *ngFor="let contest of winners" class="winner-card">
+          <div class="winner-header">
+            <div class="contest-title">{{ contest.title }}</div>
+            <div class="contest-date">{{ contest.endDate | date:'mediumDate' }}</div>
+          </div>
+          
+          <div class="winner-body">
+            <div class="winner-info">
+              <div class="winner-avatar">
+                <img 
+                  src="assets/images/avatar-placeholder.png" 
+                  alt="Winner"
+                  class="avatar-image">
+              </div>
+              <div class="winner-details">
+                <div class="winner-name">{{ contest.winnerUsername || 'Winner TBD' }}</div>
+                <div class="winner-prize">
+                  <span class="prize-icon">🏆</span>
+                  <span class="prize-amount">{{ contest.entryPoints * contest.currentParticipants | number }} pts</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="contest-stats">
+              <div class="stat">
+                <div class="stat-value">{{ contest.entryPoints | number }}</div>
+                <div class="stat-label">Entry Points</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">{{ contest.currentParticipants }}</div>
+                <div class="stat-label">Participants</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">{{ contest.winnerId ? 'Completed' : 'Pending' }}</div>
+                <div class="stat-label">Status</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="winner-footer">
+            <button 
+              [routerLink]="['/contests', contest.id]"
+              class="btn btn-primary">
+              View Contest
+            </button>
+            
+            <button 
+              *ngIf="isAdmin && !contest.winnerId"
+              [routerLink]="['/admin/declare-winner', contest.id]"
+              class="btn btn-success">
+              Declare Winner
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noWinners>
+        <app-empty-state
+          title="No Winners Yet"
+          description="Contests are still ongoing. Check back soon to see our champions!">
+          <div icon>🏆</div>
+          <div action>
+            <button routerLink="/contests" class="btn btn-primary">
+              Browse Contests
+            </button>
+          </div>
+        </app-empty-state>
+      </ng-template>
+      
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="pagination">
+        <button 
+          (click)="prevPage()" 
+          [disabled]="currentPage === 1"
+          class="page-btn">
+          ← Previous
+        </button>
+        
+        <span class="page-info">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+        
+        <button 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages"
+          class="page-btn">
+          Next →
+        </button>
+      </div>
+    </div>

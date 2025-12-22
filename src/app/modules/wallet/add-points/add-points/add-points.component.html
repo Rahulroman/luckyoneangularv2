@@ -1,0 +1,102 @@
+  <app-page-header 
+      title="Add Points" 
+      subtitle="Purchase points to join contests"
+      [showBackButton]="true">
+    </app-page-header>
+    
+    <div class="add-points-container">
+      <div class="add-points-card">
+        <!-- Quick Amounts -->
+        <div class="quick-amounts">
+          <h3>Quick Select</h3>
+          <div class="amount-buttons">
+            <button 
+              *ngFor="let amount of quickAmounts" 
+              (click)="selectAmount(amount)"
+              [class.selected]="pointsRequest.amount === amount"
+              class="amount-button">
+              {{ amount | number }} pts
+            </button>
+          </div>
+        </div>
+        
+        <!-- Custom Amount -->
+        <div class="custom-amount">
+          <h3>Custom Amount</h3>
+          <div class="input-group">
+            <input
+              type="text"
+              [(ngModel)]="customAmount"
+              (ngModelChange)="updateCustomAmount()"
+              appNumericOnly
+              placeholder="Enter points amount"
+              class="form-control"
+            />
+            <span class="input-suffix">pts</span>
+          </div>
+          <div class="amount-preview">
+            Amount: <strong>{{ pointsRequest.amount | number }}</strong> points
+          </div>
+        </div>
+        
+        <!-- Payment Method -->
+        <div class="payment-method">
+          <h3>Payment Method</h3>
+          <div class="method-options">
+            <label *ngFor="let method of paymentMethods" class="method-option">
+              <input
+                type="radio"
+                name="paymentMethod"
+                [value]="method.value"
+                [(ngModel)]="pointsRequest.paymentMethod"
+              />
+              <span class="method-icon">{{ method.icon }}</span>
+              <span class="method-name">{{ method.name }}</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Transaction ID (Optional) -->
+        <div class="transaction-id">
+          <h3>Transaction ID (Optional)</h3>
+          <input
+            type="text"
+            [(ngModel)]="pointsRequest.transactionId"
+            placeholder="Enter transaction ID if available"
+            class="form-control"
+          />
+        </div>
+        
+        <!-- Summary -->
+        <div class="summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row">
+            <span>Points:</span>
+            <span>{{ pointsRequest.amount | number }} pts</span>
+          </div>
+          <div class="summary-row">
+            <span>Payment Method:</span>
+            <span>{{ getPaymentMethodName(pointsRequest.paymentMethod) }}</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row total">
+            <span>Total Cost:</span>
+            <span>${{ calculateCost() }}</span>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button (click)="goBack()" class="btn btn-secondary">
+            Cancel
+          </button>
+          <button 
+            (click)="addPoints()" 
+            [disabled]="isLoading"
+            class="btn btn-primary">
+            <span *ngIf="!isLoading">Purchase Points</span>
+            <span *ngIf="isLoading">Processing...</span>
+          </button>
+        </div>
+      </div>
+    </div>
