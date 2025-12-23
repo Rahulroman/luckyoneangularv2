@@ -114,7 +114,7 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        component: AuthLayoutComponent, //canActivate : [authGuard , roleGuard],
+        component: AuthLayoutComponent, // canActivate : [authGuard , roleGuard],
         children: [
             {
                 path: 'login',
