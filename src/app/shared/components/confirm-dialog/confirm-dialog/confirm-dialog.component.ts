@@ -18,11 +18,11 @@ export class ConfirmDialogComponent {
   @Input() type: 'default' | 'danger' = 'default';
   @Input() visible: boolean = false;
   
-  @Output() confirmed = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<string>();
   @Output() cancelled = new EventEmitter<void>();
 
   confirm(): void {
-    this.confirmed.emit();
+    this.confirmed.emit('confirmed');
     this.close();
   }
 

@@ -1,1 +1,150 @@
-<p>manage-contests works!</p>
+ <app-page-header 
+      title="Manage Contests" 
+      subtitle="View and manage all contests">
+    </app-page-header>
+    
+    <div class="manage-contests">
+      <!-- Filters and Search -->
+      <div class="filters">
+        <div class="search-box">
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+          
+            placeholder="Search contests..."
+            class="search-input"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+        
+        <div class="filter-group">
+          <label>Status:</label>
+          <select [(ngModel)]="selectedStatus" >
+            <option value="">All</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Contests Table -->
+      <div class="contests-table">
+        <div class="table-header">
+          <div class="header-cell title">Title</div>
+          <div class="header-cell status">Status</div>
+          <div class="header-cell participants">Participants</div>
+          <div class="header-cell dates">Dates</div>
+          <div class="header-cell actions">Actions</div>
+        </div>
+        
+        <div class="table-body">
+          <div *ngFor="let contest of contests" class="table-row">
+            <div class="cell title">
+              <div class="contest-title">{{ contest.title }}</div>
+              <div class="contest-description">{{ contest.description }}</div>
+            </div>
+            
+            <div class="cell status">
+              <span class="status-badge" [class]="contest.status">
+                {{ contest.status }}
+              </span>
+            </div>
+            
+            <div class="cell participants">
+              <div class="participants-count">
+                {{ contest.currentParticipants }}/{{ contest.maxParticipants }}
+              </div>
+              <div class="participants-progress">
+                <div class="progress-bar">
+                  <div 
+                    class="progress-fill" 
+                    [style.width.%]="(contest.currentParticipants / contest.maxParticipants) * 100">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="cell dates">
+              <div class="date-item">
+                <span class="date-label">Start:</span>
+                <span class="date-value">{{ contest.startDate | date:'short' }}</span>
+              </div>
+              <div class="date-item">
+                <span class="date-label">End:</span>
+                <span class="date-value">{{ contest.endDate | date:'short' }}</span>
+              </div>
+            </div>
+            
+            <div class="cell actions">
+              <div class="action-buttons">
+                <button 
+                  [routerLink]="['/contests', contest.id]"
+                  class="btn btn-sm btn-secondary">
+                  View
+                </button>
+                
+                <button 
+                  *ngIf="contest.status === 'completed' && !contest.winnerId"
+                  [routerLink]="['/admin/declare-winner', contest.id]"
+                  class="btn btn-sm btn-primary">
+                  Declare Winner
+                </button>
+                
+                <button 
+                  *ngIf="contest.status === 'upcoming' || contest.status === 'active'"
+              
+                  class="btn btn-sm btn-warning">
+                  Edit
+                </button>
+                
+                <button 
+                  (click)="deleteContest(contest)"
+                  class="btn btn-sm btn-danger">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- No Results -->
+      <div *ngIf="contests.length === 0" class="no-results">
+        <div class="no-results-icon">🏆</div>
+        <div class="no-results-text">No contests found</div>
+      </div>
+      
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="pagination">
+        <button 
+       
+          [disabled]="currentPage === 1"
+          class="page-btn">
+          ← Previous
+        </button>
+        
+        <span class="page-info">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+        
+        <button 
+          [disabled]="currentPage === totalPages"
+          class="page-btn">
+          Next →
+        </button>
+      </div>
+    </div>
+    
+    <!-- Confirm Dialog -->
+    <app-confirm-dialog
+      [visible]="showDeleteDialog"
+      title="Delete Contest"
+      [message]="'Are you sure you want to delete the contest: ' + selectedContest?.title + '?'"
+      confirmText="Delete"
+      cancelText="Cancel"
+      type="danger"
+      (confirmed)="onDeleteConfirm($event)"
+      (cancelled)="onDeleteCancel()">
+    </app-confirm-dialog>
